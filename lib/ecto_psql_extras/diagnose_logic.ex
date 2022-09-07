@@ -109,8 +109,10 @@ defmodule EctoPSQLExtras.DiagnoseLogic do
       args: [min_relation_size_mb: @null_indexes_min_size_mb]
     ).rows
     |> Enum.filter(fn(el) ->
-      null_frac = Enum.at(el, 4)
+      null_frac = Enum.at(el, 5)
       |> String.replace("%", "")
+      |> String.trim()
+      |> String.replace(~r/^\./, "0.")
       |> Float.parse
       |> elem(0)
       null_frac > @null_min_null_frac_percent
